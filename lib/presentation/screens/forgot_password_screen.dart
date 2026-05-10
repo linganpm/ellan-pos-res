@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 import '../../bloc/forgot_password/forgot_password_cubit.dart';
 import '../../bloc/forgot_password/forgot_password_state.dart';
@@ -42,7 +43,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 32),
                         Text(
-                          'Unlock Your\nBusiness Potential',
+                          AppLocalizations.of(context)!.welcomeUnlockBusiness,
                           style: FontUtility.heading.copyWith(
                             color: Colors.white,
                             fontSize: 42,
@@ -51,7 +52,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'NexPOS provides an intuitive tablet experience designed perfectly for modern workflows.',
+                          AppLocalizations.of(context)!.welcomeDescription,
                           style: FontUtility.body.copyWith(
                             color: Colors.white70,
                             fontSize: 18,
@@ -91,7 +92,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
-                                  'Password reset link sent to your registered address!',
+                                  AppLocalizations.of(context)!.forgotPasswordSuccess,
                                   style: FontUtility.body.copyWith(color: Colors.white),
                                 ),
                                 backgroundColor: Colors.green.shade600,
@@ -116,7 +117,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  'Forgot Password?',
+                                  AppLocalizations.of(context)!.forgotPasswordTitle,
                                   textAlign: TextAlign.center,
                                   style: FontUtility.heading.copyWith(
                                     color: const Color(0xFF333333),
@@ -124,7 +125,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 ),
                                 const SizedBox(height: 16),
                                 Text(
-                                  'Please enter your registered Email address or Phone Number.',
+                                  AppLocalizations.of(context)!.forgotPasswordInstruction,
                                   textAlign: TextAlign.center,
                                   style: FontUtility.body.copyWith(
                                     color: Colors.black54,
@@ -162,7 +163,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                   child: TextField(
                                     onChanged: (value) => context.read<ForgotPasswordCubit>().identifierChanged(value),
                                     decoration: InputDecoration(
-                                      hintText: 'Email / Mobile Number',
+                                      hintText: AppLocalizations.of(context)!.signInEmailPhone,
                                       hintStyle: FontUtility.body.copyWith(color: Colors.black38),
                                       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                       border: OutlineInputBorder(
@@ -227,7 +228,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                               : state.isSuccess 
                                                 ? const Icon(Icons.check, color: Colors.white, size: 28)
                                                 : Text(
-                                                    'Send Reset Link',
+                                                    AppLocalizations.of(context)!.forgotPasswordSendLink,
                                                     style: FontUtility.button.copyWith(
                                                       color: state.isValid ? Colors.white : Colors.grey.shade500,
                                                     ),
@@ -246,7 +247,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                       }
                                     },
                                     child: Text(
-                                      'Back to Sign In',
+                                      AppLocalizations.of(context)!.forgotPasswordBackToSignIn,
                                       style: FontUtility.body.copyWith(
                                         color: const Color(0xFF4A00E0),
                                         fontWeight: FontWeight.w600,

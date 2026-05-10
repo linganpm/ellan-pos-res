@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 import '../../bloc/welcome/welcome_cubit.dart';
 import '../../bloc/welcome/welcome_state.dart';
@@ -43,7 +44,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 32),
                       Text(
-                        'Unlock Your\nBusiness Potential',
+                        AppLocalizations.of(context)!.welcomeUnlockBusiness,
                         style: FontUtility.heading.copyWith(
                           color: Colors.white,
                           fontSize: 42,
@@ -52,7 +53,7 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: 24),
                       Text(
-                        'NexPOS provides an intuitive tablet experience designed perfectly for modern workflows.',
+                        AppLocalizations.of(context)!.welcomeDescription,
                         style: FontUtility.body.copyWith(
                           color: Colors.white70,
                           fontSize: 18,
@@ -91,14 +92,14 @@ class WelcomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Let\'s Get Started',
+                            AppLocalizations.of(context)!.welcomeGetStarted,
                             style: FontUtility.heading.copyWith(
                               color: const Color(0xFF333333),
                             ),
                           ),
                           const SizedBox(height: 16),
                           Text(
-                            'Log in to your account or create a new one to start processing payments effortlessly.',
+                            AppLocalizations.of(context)!.welcomeAuthPrompt,
                             style: FontUtility.body.copyWith(
                               color: Colors.black54,
                             ),
@@ -128,7 +129,7 @@ class WelcomeScreen extends StatelessWidget {
                             const SizedBox(height: 24),
                           ],
                           Text(
-                            'Enter your organization name',
+                            AppLocalizations.of(context)!.welcomeEnterOrg,
                             style: FontUtility.body.copyWith(
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF333333),
@@ -139,7 +140,7 @@ class WelcomeScreen extends StatelessWidget {
                             onChanged: (value) =>
                                 context.read<WelcomeCubit>().organizationNameChanged(value),
                             decoration: InputDecoration(
-                              hintText: 'e.g. Acme Corp',
+                              hintText: AppLocalizations.of(context)!.welcomeOrgHint,
                               hintStyle: FontUtility.body.copyWith(color: Colors.black38),
                               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                               border: OutlineInputBorder(

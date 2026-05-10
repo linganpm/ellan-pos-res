@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 import '../../bloc/sign_in/sign_in_cubit.dart';
 import '../../bloc/sign_in/sign_in_state.dart';
 import 'forgot_password_screen.dart';
+import 'home_screen.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({super.key});
@@ -43,7 +45,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 32),
                         Text(
-                          'Unlock Your\nBusiness Potential',
+                          AppLocalizations.of(context)!.welcomeUnlockBusiness,
                           style: FontUtility.heading.copyWith(
                             color: Colors.white,
                             fontSize: 42,
@@ -52,7 +54,7 @@ class SignInScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
                         Text(
-                          'NexPOS provides an intuitive tablet experience designed perfectly for modern workflows.',
+                          AppLocalizations.of(context)!.welcomeDescription,
                           style: FontUtility.body.copyWith(
                             color: Colors.white70,
                             fontSize: 18,
@@ -74,7 +76,17 @@ class SignInScreen extends StatelessWidget {
                 child: Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 60.0),
-                    child: BlocBuilder<SignInCubit, SignInState>(
+                    child: BlocConsumer<SignInCubit, SignInState>(
+                      listener: (context, state) {
+                        if (state.isSuccess) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ),
+                          );
+                        }
+                      },
                       builder: (context, state) {
                         return SingleChildScrollView(
                           child: Column(
@@ -82,7 +94,7 @@ class SignInScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Text(
-                              'Welcome',
+                              AppLocalizations.of(context)!.signInWelcome,
                               textAlign: TextAlign.center,
                               style: FontUtility.heading.copyWith(
                                 color: const Color(0xFF333333),
@@ -119,7 +131,7 @@ class SignInScreen extends StatelessWidget {
                               const SizedBox(height: 24),
                             ],
                             Text(
-                              'Email / Mobile Number',
+                              AppLocalizations.of(context)!.signInEmailPhone,
                               style: FontUtility.body.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF333333),
@@ -129,7 +141,7 @@ class SignInScreen extends StatelessWidget {
                             TextField(
                               onChanged: (value) => context.read<SignInCubit>().identifierChanged(value),
                               decoration: InputDecoration(
-                                hintText: 'Enter email or mobile',
+                                hintText: AppLocalizations.of(context)!.signInEmailPhoneHint,
                                 hintStyle: FontUtility.body.copyWith(color: Colors.black38),
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 border: OutlineInputBorder(
@@ -149,7 +161,7 @@ class SignInScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 24),
                             Text(
-                              'Password',
+                              AppLocalizations.of(context)!.signInPassword,
                               style: FontUtility.body.copyWith(
                                 fontWeight: FontWeight.bold,
                                 color: const Color(0xFF333333),
@@ -160,7 +172,7 @@ class SignInScreen extends StatelessWidget {
                               onChanged: (value) => context.read<SignInCubit>().passwordChanged(value),
                               obscureText: state.obscurePassword,
                               decoration: InputDecoration(
-                                hintText: 'Enter password',
+                                hintText: AppLocalizations.of(context)!.signInPasswordHint,
                                 hintStyle: FontUtility.body.copyWith(color: Colors.black38),
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                                 border: OutlineInputBorder(
@@ -198,7 +210,7 @@ class SignInScreen extends StatelessWidget {
                                     GestureDetector(
                                       onTap: () => context.read<SignInCubit>().togglePasswordVisibility(),
                                       child: Text(
-                                        'Show Password',
+                                        AppLocalizations.of(context)!.signInShowPassword,
                                         style: FontUtility.body.copyWith(color: Colors.black54),
                                       ),
                                     ),
@@ -214,7 +226,7 @@ class SignInScreen extends StatelessWidget {
                                     );
                                   },
                                   child: Text(
-                                    'Forgot Password?',
+                                    AppLocalizations.of(context)!.signInForgotPasswordPrompt,
                                     style: FontUtility.body.copyWith(
                                       color: const Color(0xFF4A00E0),
                                       fontWeight: FontWeight.w600,
@@ -267,7 +279,7 @@ class SignInScreen extends StatelessWidget {
                                               ),
                                             )
                                           : Text(
-                                              'Sign In',
+                                              AppLocalizations.of(context)!.signInButton,
                                               style: FontUtility.button.copyWith(
                                                 color: state.isValid ? Colors.white : Colors.grey.shade500,
                                               ),

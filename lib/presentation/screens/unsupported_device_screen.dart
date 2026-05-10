@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 
 class UnsupportedDeviceScreen extends StatelessWidget {
@@ -34,13 +35,13 @@ class UnsupportedDeviceScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 24),
                 Text(
-                  'Tablet Optimised Only',
+                  AppLocalizations.of(context)!.unsupportedDeviceTitle,
                   style: FontUtility.heading.copyWith(color: Colors.white),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  'This application is specifically designed for iPads and Android tablets.\nPlease open it on a larger display device.',
+                  AppLocalizations.of(context)!.unsupportedDeviceDesc,
                   style: FontUtility.body.copyWith(
                     color: Colors.white70,
                     height: 1.5,
