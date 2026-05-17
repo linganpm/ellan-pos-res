@@ -7,6 +7,7 @@ class SignInState extends Equatable {
   final String? errorMessage;
   final bool isSuccess;
   final bool obscurePassword;
+  final bool navigateToHome;
 
   const SignInState({
     this.identifier = '',
@@ -15,6 +16,7 @@ class SignInState extends Equatable {
     this.errorMessage,
     this.isSuccess = false,
     this.obscurePassword = true,
+    this.navigateToHome = false
   });
 
   bool get isPasswordValid => password.length >= 3 && password.length <= 11;
@@ -28,6 +30,7 @@ class SignInState extends Equatable {
     bool? isSuccess,
     bool? obscurePassword,
     bool clearError = false,
+    bool navigateToHome = false
   }) {
     return SignInState(
       identifier: identifier ?? this.identifier,

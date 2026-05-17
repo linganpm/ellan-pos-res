@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 import '../../bloc/welcome/welcome_cubit.dart';
 import '../../bloc/welcome/welcome_state.dart';
-import 'sign_in_screen.dart';
+import '../../core/routes.dart';
+import '../../core/controllers/ui_store_controller.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -12,7 +14,10 @@ class WelcomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WelcomeCubit(),
+      create: (context) => WelcomeCubit(
+        prefs: context.read<SharedPreferences>(),
+        controller: context.read<UiStoreController>(),
+      ),
       child: Scaffold(
       body: Row(
         children: [
@@ -76,16 +81,11 @@ class WelcomeScreen extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 60.0),
                   child: BlocConsumer<WelcomeCubit, WelcomeState>(
-                    listener: (context, state) {
-                      if (state.isSuccess) {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SignInScreen(),
-                          ),
-                        );
-                      }
-                    },
+                      listener: (context, state) {
+                        if (state.isSuccess) {
+                          Navigator.pushReplacementNamed(context, AppRoutes.login);
+                        }
+                      },
                     builder: (context, state) {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -128,20 +128,21 @@ class WelcomeScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 24),
                           ],
-                          Text(
-                            AppLocalizations.of(context)!.welcomeEnterOrg,
-                            style: FontUtility.body.copyWith(
-                              fontWeight: FontWeight.bold,
-                              color: const Color(0xFF333333),
+                            Text(
+                              AppLocalizations.of(context)!.welcomeEnterOrgCode,
+                              style: FontUtility.body.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF333333),
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 8),
-                          TextField(
-                            onChanged: (value) =>
-                                context.read<WelcomeCubit>().organizationNameChanged(value),
-                            decoration: InputDecoration(
-                              hintText: AppLocalizations.of(context)!.welcomeOrgHint,
-                              hintStyle: FontUtility.body.copyWith(color: Colors.black38),
+                            const SizedBox(height: 8),
+                            TextField(
+                              keyboardType: TextInputType.text,
+                              onChanged: (value) =>
+                                  context.read<WelcomeCubit>().organizationNameChanged(value),
+                              decoration: InputDecoration(
+                                hintText: AppLocalizations.of(context)!.welcomeOrgCodeHint,
+                               hintStyle: FontUtility.body.copyWith(color: Colors.black38),
                               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(12),

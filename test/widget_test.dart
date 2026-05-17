@@ -7,13 +7,45 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' show Platform, Directory;
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:pos_tablet/main.dart';
+import 'package:pos_tablet/core/di/service_locator.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+    // Initialize sqflite FFI on desktop platforms for testing
+    try {
+      if (!Platform.isAndroid && !Platform.isIOS) {
+        sqfliteFfiInit();
+        databaseFactory = databaseFactoryFfi;
+        
+        // Ensure a writable directory exists for the test
+        try {
+          final tempDir = Directory.systemTemp.path;
+          final appDir = Directory('$tempDir/pos_tablet_db');
+          if (!appDir.existsSync()) {
+            appDir.createSync(recursive: true);
+          }
+        } catch (_) {
+          // Continue if directory creation fails
+        }
+      }
+    } catch (_) {
+      // Continue if FFI initialization fails
+    }
+
+    // Provide mock SharedPreferences for the widget test
+    SharedPreferences.setMockInitialValues({});
+    final prefs = await SharedPreferences.getInstance();
+
+    // Initialize the service locator before building the app
+    await initServiceLocator(prefs: prefs);
+
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const PosTabletApp());
+    await tester.pumpWidget(PosTabletApp(prefs: prefs));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -140,6 +140,18 @@ abstract class AppLocalizations {
   /// **'e.g. Acme Corp'**
   String get welcomeOrgHint;
 
+  /// No description provided for @welcomeEnterOrgCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your organization code'**
+  String get welcomeEnterOrgCode;
+
+  /// No description provided for @welcomeOrgCodeHint.
+  ///
+  /// In en, this message translates to:
+  /// **'e.g., 100001'**
+  String get welcomeOrgCodeHint;
+
   /// No description provided for @welcomeSubmit.
   ///
   /// In en, this message translates to:

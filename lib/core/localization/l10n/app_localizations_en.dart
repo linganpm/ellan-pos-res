@@ -32,6 +32,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get welcomeOrgHint => 'e.g. Acme Corp';
 
   @override
+  String get welcomeEnterOrgCode => 'Enter your organization code';
+
+  @override
+  String get welcomeOrgCodeHint => 'e.g., 100001';
+
+  @override
   String get welcomeSubmit => 'Submit';
 
   @override

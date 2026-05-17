@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pos_tablet/core/controllers/ui_store_controller.dart';
 import '../../core/localization/l10n/app_localizations.dart';
 import '../../core/utils/font_utility.dart';
 import '../../bloc/language/language_bloc.dart';
@@ -154,20 +155,25 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
         const SizedBox(width: 16),
-        Padding(
-          padding: const EdgeInsets.only(right: 24.0),
-          child: InkWell(
-            onTap: () {
-              // TODO: Open profile or settings
-            },
-            borderRadius: BorderRadius.circular(24),
-            child: const CircleAvatar(
-              backgroundColor: Color(0xFF4A00E0),
-              radius: 20,
-              child: Icon(Icons.person_rounded, color: Colors.white, size: 24),
-            ),
-          ),
-        ),
+         Padding(
+           padding: const EdgeInsets.only(right: 24.0),
+           child: InkWell(
+             onTap: () async{
+               final controller = context.read<UiStoreController>();
+               print("Current Organisation: ${controller.organisation?.orgName ?? 'Unknown'}");
+               var session = await controller.currentSession();
+               print("Current Session: ${session != null ? 'Active' : 'No active session'}");
+               print("Current session ${session!.email} and org ${session.loginAt} and ${session.organisationRole}");
+               // TODO: Open profile or settings
+             },
+             borderRadius: BorderRadius.circular(24),
+             child: const CircleAvatar(
+               backgroundColor: Color(0xFF4A00E0),
+               radius: 20,
+               child: Icon(Icons.person_rounded, color: Colors.white, size: 24),
+             ),
+           ),
+         ),
       ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.0),

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../bloc/splash/splash_bloc.dart';
-import '../../bloc/splash/splash_event.dart';
-import '../../bloc/splash/splash_state.dart';
+import '../../bloc/user/user_bloc.dart';
+import '../../bloc/user/user_event.dart';
+import '../../bloc/user/user_state.dart';
+import '../../core/routes.dart';
 import '../../core/utils/font_utility.dart';
-import 'welcome_screen.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,7 +23,8 @@ class _SplashScreenState extends State<SplashScreen>
   void initState() {
     super.initState();
     // Start splash bloc loading
-    context.read<SplashBloc>().add(SplashStarted());
+    // Dispatch user initialization event
+    context.read<UserBloc>().add(UserInitializeEvent());
 
     // Setup micro-animations
     _animationController = AnimationController(
@@ -44,20 +46,37 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SplashBloc, SplashState>(
+    return BlocListener<UserBloc, UserState>(
       listener: (context, state) {
-        if (state is SplashCompleted) {
-          // Navigate to Welcome screen when done
-          Navigator.of(context).pushReplacement(
-            PageRouteBuilder(
-              pageBuilder: (context, animation, secondaryAnimation) =>
-                  const WelcomeScreen(),
-              transitionsBuilder:
-                  (context, animation, secondaryAnimation, child) {
-                return FadeTransition(opacity: animation, child: child);
-              },
-            ),
-          );
+        if (state is UserLoaded) {
+          // Navigate to Home screen when user is loaded
+          Future.delayed(Duration(seconds: 2), () {
+            Navigator.pushReplacementNamed(context, AppRoutes.home);
+          });
+        } else if (state is UserError) {
+          if (state.message.contains("No stored organisation code found")) {
+            Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
+          } else if (state.message.contains("No stored configuration found")) {
+            Navigator.pushReplacementNamed(context, AppRoutes.login);
+          } else {
+            // Show error dialog
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Initialization Error'),
+                content: Text(state.message),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      Navigator.pushReplacementNamed(context, AppRoutes.login);
+                    },
+                    child: const Text('Retry'),
+                  ),
+                ],
+              ),
+            );
+          }
         }
       },
       child: Scaffold(

@@ -66,7 +66,7 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        shadowColor: Colors.black.withOpacity(0.05),
+        shadowColor: Colors.black.withValues(alpha: 0.05),
         title: Text(
           AppLocalizations.of(context)!.homeOrdersList,
           style: FontUtility.heading.copyWith(fontSize: 22),
@@ -101,7 +101,7 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
                     borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.03),
+                        color: Colors.black.withValues(alpha: 0.03),
                         blurRadius: 10,
                         offset: const Offset(0, 4),
                       ),
@@ -138,17 +138,17 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   _buildSegment(AppLocalizations.of(context)!.orderListFilterAll, 'All', selectedType == 'All'),
-                  Container(width: 1, color: Colors.grey.withOpacity(0.2)),
+                  Container(width: 1, color: Colors.grey.withValues(alpha: 0.2)),
                   _buildSegment(AppLocalizations.of(context)!.orderListFilterDineIn, 'Dine In', selectedType == 'Dine In'),
-                  Container(width: 1, color: Colors.grey.withOpacity(0.2)),
+                  Container(width: 1, color: Colors.grey.withValues(alpha: 0.2)),
                   _buildSegment(AppLocalizations.of(context)!.orderListFilterPickup, 'Pickup', selectedType == 'Pickup'),
-                  Container(width: 1, color: Colors.grey.withOpacity(0.2)),
+                  Container(width: 1, color: Colors.grey.withValues(alpha: 0.2)),
                   _buildSegment(AppLocalizations.of(context)!.orderListFilterDelivery, 'Delivery', selectedType == 'Delivery'),
                 ],
               ),
@@ -178,11 +178,11 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
               contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
-                borderSide: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                borderSide: BorderSide(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -213,10 +213,10 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 decoration: BoxDecoration(
-                  color: statusFilter != null ? const Color(0xFF4A00E0).withOpacity(0.1) : Colors.white,
+                  color: statusFilter != null ? const Color(0xFF4A00E0).withValues(alpha: 0.1) : Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: statusFilter != null ? const Color(0xFF4A00E0) : Colors.grey.withOpacity(0.2),
+                    color: statusFilter != null ? const Color(0xFF4A00E0) : Colors.grey.withValues(alpha: 0.2),
                   ),
                 ),
                 child: Row(
@@ -281,9 +281,9 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.grey.withOpacity(0.05),
+        color: Colors.grey.withValues(alpha: 0.05),
         borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
-        border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.2))),
+        border: Border(bottom: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
       ),
       child: Row(
         children: [
@@ -331,7 +331,7 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.receipt_long_rounded, size: 64, color: Colors.grey.withOpacity(0.5)),
+                  Icon(Icons.receipt_long_rounded, size: 64, color: Colors.grey.withValues(alpha: 0.5)),
                   const SizedBox(height: 16),
                   Text(
                     'No orders found',
@@ -437,7 +437,7 @@ class _OrderListScreenContentState extends State<_OrderListScreenContent> {
                       Navigator.pop(dialogContext);
                     }
                   },
-                  selectedColor: const Color(0xFF4A00E0).withOpacity(0.1),
+                  selectedColor: const Color(0xFF4A00E0).withValues(alpha: 0.1),
                   labelStyle: FontUtility.body.copyWith(
                     color: isSelected ? const Color(0xFF4A00E0) : Colors.black87,
                   ),

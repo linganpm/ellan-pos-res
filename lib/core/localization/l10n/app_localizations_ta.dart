@@ -32,6 +32,12 @@ class AppLocalizationsTa extends AppLocalizations {
   String get welcomeOrgHint => 'எ.கா. ஆக்மே நிறுவனம்';
 
   @override
+  String get welcomeEnterOrgCode => 'உங்கள் நிறுவனக் குறியீட்டை உள்ளிடவும்';
+
+  @override
+  String get welcomeOrgCodeHint => 'எ.கா., 100001';
+
+  @override
   String get welcomeSubmit => 'சமர்ப்பி';
 
   @override
