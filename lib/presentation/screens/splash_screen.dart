@@ -57,7 +57,7 @@ class _SplashScreenState extends State<SplashScreen>
           if (state.message.contains("No stored organisation code found")) {
             Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
           } else if (state.message.contains("No stored configuration found")) {
-            Navigator.pushReplacementNamed(context, AppRoutes.login);
+            Navigator.pushReplacementNamed(context, AppRoutes.onboarding);
           } else {
             // Show error dialog
             showDialog(

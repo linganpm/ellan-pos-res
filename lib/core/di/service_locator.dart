@@ -4,7 +4,7 @@ import 'package:pos_tablet/core/controllers/ui_store_controller.dart';
 import 'package:pos_tablet/features/store/data/repositories/store_repository_impl.dart';
 import 'package:pos_tablet/features/store/domain/usecases/initialize_store.dart';
 import 'package:pos_tablet/features/store/presentation/bloc/store_bloc.dart';
-import 'package:pos_tablet/data/repository/store_repository.dart';
+// ...existing code...
 
 final GetIt getIt = GetIt.instance;
 
@@ -40,8 +40,6 @@ Future<void> initServiceLocator({required SharedPreferences prefs}) async {
         ));
   }
 
-  // Register StoreRepository for store list feature
-  if (!getIt.isRegistered<StoreRepository>()) {
-    getIt.registerLazySingleton<StoreRepository>(() => StoreRepository());
-  }
+  // Note: the legacy StoreRepository class was removed in favor of using
+  // UiStoreController directly from the StoreListCubit. Do not register it.
 }

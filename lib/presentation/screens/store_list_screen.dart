@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../core/utils/font_utility.dart';
 import '../../core/routes.dart';
 import '../../bloc/store_list/store_list_bloc.dart';
-import '../../bloc/store_list/store_list_event.dart';
 import '../../bloc/store_list/store_list_state.dart';
 import '../../data/models/store_model.dart';
 import '../../core/localization/l10n/app_localizations.dart';
@@ -20,8 +19,8 @@ class StoreListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => StoreListBloc()
-          ..add(const LoadStoresEvent()),
+      create: (context) => StoreListCubit()
+          ..loadStores(),
       child: Scaffold(
         body: Row(
           children: [
@@ -133,11 +132,11 @@ class StoreListScreen extends StatelessWidget {
 
   /// Builds the search field for filtering stores
   Widget _buildSearchField() {
-    return BlocBuilder<StoreListBloc, StoreListState>(
+    return BlocBuilder<StoreListCubit, StoreListState>(
       builder: (context, state) {
         return TextField(
           onChanged: (query) {
-            context.read<StoreListBloc>().add(SearchStoresEvent(query: query));
+            context.read<StoreListCubit>().searchStores(query);
           },
           decoration: InputDecoration(
             hintText: 'Search by store name or ID...',
@@ -165,7 +164,7 @@ class StoreListScreen extends StatelessWidget {
 
   /// Builds the main store list content with appropriate state handling
   Widget _buildStoreListContent() {
-    return BlocBuilder<StoreListBloc, StoreListState>(
+    return BlocBuilder<StoreListCubit, StoreListState>(
       builder: (context, state) {
         if (state is StoreListLoading) {
           return Center(
@@ -275,10 +274,9 @@ class StoreListScreen extends StatelessWidget {
     required bool isSelected,
   }) {
     return InkWell(
-      onTap: () {
-        context.read<StoreListBloc>().add(
-              SelectStoreEvent(storeId: store.storeId),
-            );
+               onTap: () {
+                context.read<StoreListCubit>().selectStore(store.storeId);
+              
       },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -444,7 +442,7 @@ class StoreListScreen extends StatelessWidget {
 
   /// Builds the submit button
   Widget _buildSubmitButton() {
-    return BlocListener<StoreListBloc, StoreListState>(
+    return BlocListener<StoreListCubit, StoreListState>(
       listener: (context, state) {
         if (state is StoreVerificationSuccess) {
           // Show success message
@@ -469,7 +467,7 @@ class StoreListScreen extends StatelessWidget {
           );
         }
       },
-      child: BlocBuilder<StoreListBloc, StoreListState>(
+        child: BlocBuilder<StoreListCubit, StoreListState>(
         builder: (context, state) {
           bool isLoading = state is StoreVerificationLoading;
           bool isEnabled = false;
@@ -484,9 +482,9 @@ class StoreListScreen extends StatelessWidget {
             width: double.infinity,
             height: 56,
             child: ElevatedButton(
-              onPressed: isEnabled && !isLoading
+               onPressed: isEnabled && !isLoading
                   ? () {
-                      context.read<StoreListBloc>().add(const VerifyStoreEvent());
+                      context.read<StoreListCubit>().verifySelectedStore();
                     }
                   : null,
               style: ElevatedButton.styleFrom(

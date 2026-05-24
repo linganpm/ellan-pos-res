@@ -25,49 +25,19 @@ import 'core/controllers/ui_store_controller.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize sqflite FFI on desktop platforms so sqlite can open DB files.
-  // This must run before any database access performed by downstream
-  // libraries (for example pos_orders_offline) so they pick up the ffi
-  // database factory.
+  // Initialize sqflite FFI on all platforms (Android, iOS, macOS, Windows, Linux)
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+  
   try {
-    if (!Platform.isAndroid && !Platform.isIOS) {
-      sqfliteFfiInit();
-      // set the global factory used by sqflite_common
-      databaseFactory = databaseFactoryFfi;
-      
-      // Ensure a writable directory exists for SQLite database files.
-      // Try multiple paths, falling back to temp directory if needed.
-      bool dirCreated = false;
-      
-      // First, try to use the system temp directory (most reliable)
-      try {
-        final tempDir = Directory.systemTemp.path;
-        final appDir = Directory('$tempDir/pos_tablet_db');
-        if (!appDir.existsSync()) {
-          appDir.createSync(recursive: true);
-        }
-        dirCreated = true;
-      } catch (e) {
-        // Temp directory creation failed, try application documents directory
-        try {
-          final appDocsDir = await getApplicationDocumentsDirectory();
-          // Validate the path is not root or system directory
-          if (appDocsDir.path != '/' && !appDocsDir.path.startsWith('/.')) {
-            if (!appDocsDir.existsSync()) {
-              appDocsDir.createSync(recursive: true);
-            }
-            dirCreated = true;
-          }
-        } catch (_) {
-          // Both attempts failed, but we continue anyway.
-          // The database operations may still work or have their own fallbacks.
-        }
-      }
+    final appSupportDir = await getApplicationSupportDirectory();
+    final dbDir = Directory('${appSupportDir.path}/databases');
+    if (!await dbDir.exists()) {
+      await dbDir.create(recursive: true);
     }
-  } catch (_) {
-    // If sqflite_ffi isn't available or initialization fails, we continue
-    // and let the downstream code handle errors. Avoid crashing the app
-    // during initialization.
+    await databaseFactory.setDatabasesPath(dbDir.path);
+  } catch (e) {
+    debugPrint('Failed to set sqflite databases path: $e');
   }
 
   // Initialize SharedPreferences for app-wide access

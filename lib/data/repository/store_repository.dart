@@ -61,16 +61,15 @@ class StoreRepository implements IStoreRepository {
       // Get the global UiStoreController instance from the service locator
       final controller = getIt<UiStoreController>();
 
-      final deviceStatus = await controller.registerDevice(
-        deviceId: 'ui-example-device-001',
-        make: 'Linux',
-        model: 'UI Example',
-        lat: 0,
-        lan: 0,
-
-      );
       await controller.openStore(storeId);
 
+      // In a real app, call this when connectivity resumes or before starting sync.
+      await controller.refreshAccessControl();
+
+      final storeAccess = await controller.currentStoreAccess();
+      if (storeAccess == null || !storeAccess.accessEnabled) {
+        throw StateError('Customer does not have access to the selected store.');
+      }
       // Persist the selected store id so other features can reference it
       final prefs = getIt<SharedPreferences>();
       await prefs.setString('selectedStoreId', storeId);

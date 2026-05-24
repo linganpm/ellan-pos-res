@@ -16,7 +16,6 @@ class WelcomeScreen extends StatelessWidget {
     return BlocProvider(
       create: (context) => WelcomeCubit(
         prefs: context.read<SharedPreferences>(),
-        controller: context.read<UiStoreController>(),
       ),
       child: Scaffold(
       body: Row(

@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pos_tablet/core/controllers/ui_store_controller.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'dart:io';
+import '../../core/di/service_locator.dart';
 import 'welcome_state.dart';
 import 'package:pos_tablet/core/constants/discovery_constants.dart';
 
@@ -12,11 +13,9 @@ import 'package:pos_tablet/core/constants/discovery_constants.dart';
 /// Handles organization code validation, remote config fetching, and device info collection.
 class WelcomeCubit extends Cubit<WelcomeState> {
   final SharedPreferences prefs;
-  final UiStoreController controller;
 
   WelcomeCubit({
     required this.prefs,
-    required this.controller,
   }) : super(const WelcomeState());
 
   void organizationNameChanged(String name) {
@@ -101,14 +100,30 @@ class WelcomeCubit extends Cubit<WelcomeState> {
         lookupUrl: kDiscoveryUrl,
       );
 
+
+
       // Persist the resolved orgCode for future cold starts
       await prefs.setString('orgCode', organisation.orgCode);
+
+      final controller = getIt<UiStoreController>();
+
 
       // Boot the UI controller with the remote configuration
       await controller.bootWithConfig(remoteConfig);
 
+      final bootstrap = await controller.syncOrganisationBootstrap(organisation.orgCode);
+
       // Collect and store device information for analytics/identification
       await _collectAndStoreDeviceInfo();
+
+      final deviceStatus = await controller.registerDevice(
+        deviceId: 'ui-example-device-001',
+        make: 'Linux',
+        model: 'UI Example',
+        lat: 0,
+        lan: 0,
+
+      );
 
       // Emit success state to trigger navigation
       emit(state.copyWith(

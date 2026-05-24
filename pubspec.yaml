@@ -44,13 +44,15 @@ dependencies:
   shared_preferences: ^2.2.3
   device_info_plus: ^9.0.2
   get_it: ^8.1.0
-  sqflite_common_ffi: ^2.3.0
+  sqflite: ^2.3.3
+  path: ^1.9.0
   path_provider: ^2.1.0
 
   pos_orders_offline:
     git:
       url: https://github.com/linganpm/pos-core-ib.git
       ref: main
+  sqlite3_flutter_libs: ^0.5.42
 
 dev_dependencies:
   flutter_test:
@@ -76,8 +78,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-     - config/
+#  assets:
+#     - config/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

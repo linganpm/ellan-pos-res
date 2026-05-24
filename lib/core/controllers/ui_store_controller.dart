@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:pos_orders_offline/sqflite_ffi_io.dart';
 import 'package:pos_orders_offline/store.dart';
 import 'package:pos_orders_offline/store_config.dart';
 import 'package:pos_orders_offline/store_models.dart';
@@ -133,6 +135,7 @@ class UiStoreController {
     final config = _requireConfig();
     final login = _requireOrganisationLogin();
     final deviceRegistration = _requireDeviceRegistration();
+    final databasePath = await databaseFactory.getDatabasesPath();
 
     final existingStore = _store;
     if (existingStore == null) {
@@ -141,6 +144,7 @@ class UiStoreController {
         storeId: storeId,
         deviceRegistration: deviceRegistration,
         config: config,
+        databasePath: databasePath
       );
     } else {
       _store = await existingStore.switchAccessibleStore(
@@ -159,6 +163,7 @@ class UiStoreController {
       _store!.sync.startAutoSync(_store!.scope);
     }
   }
+
 
   Future<void> switchStore(String storeId) async {
     final store = _requireStore();

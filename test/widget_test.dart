@@ -9,29 +9,28 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io' show Platform, Directory;
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import 'package:pos_tablet/main.dart';
 import 'package:pos_tablet/core/di/service_locator.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Initialize sqflite FFI on desktop platforms for testing
+    // Initialize sqflite FFI on all platforms for testing
     try {
-      if (!Platform.isAndroid && !Platform.isIOS) {
-        sqfliteFfiInit();
-        databaseFactory = databaseFactoryFfi;
-        
-        // Ensure a writable directory exists for the test
-        try {
-          final tempDir = Directory.systemTemp.path;
-          final appDir = Directory('$tempDir/pos_tablet_db');
-          if (!appDir.existsSync()) {
-            appDir.createSync(recursive: true);
-          }
-        } catch (_) {
-          // Continue if directory creation fails
+      sqfliteFfiInit();
+      databaseFactory = databaseFactoryFfi;
+      
+      // Ensure a writable directory exists for the test and configure the factory to use it
+      try {
+        final tempDir = Directory.systemTemp.path;
+        final appDir = Directory('$tempDir/pos_tablet_db');
+        if (!appDir.existsSync()) {
+          appDir.createSync(recursive: true);
         }
+        await databaseFactory.setDatabasesPath(appDir.path);
+      } catch (_) {
+        // Continue if directory creation fails
       }
     } catch (_) {
       // Continue if FFI initialization fails
