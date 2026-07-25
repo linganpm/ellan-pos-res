@@ -94,7 +94,6 @@ class StoreListCubit extends Cubit<StoreListState> {
     try {
       // Open and refresh via controller
 
-      await controller.loadCustomersFromJson('fixtures/customer_data.json');
 
       await controller.openStore(_selectedStoreId!);
       await controller.refreshAccessControl();
